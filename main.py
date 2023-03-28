@@ -68,84 +68,110 @@
 # print(sm)
 
 # Дейкстра
-I = [1,2,3,4,5,6,7,8,9,10,11,12]
-ribs = [[1,2], [1,5], [1,6], [2,3], [2,4], [2,5], [2,6], [3,4],
-        [3,5], [4,5], [4,7], [4,8], [5,6], [5,7], [5,8], [5,9],
-        [6,8], [6,9], [7,8],[7,10], [7,11], [8,9], [8,10], [8,11], [8,12],
-        [9,11], [9,12], [10,11], [11,12]]
-weight = [7, 9, 2, 5, 4, 8, 2, 2, 9, 3, 8, 3, 3, 5, 1, 7, 6, 1, 6, 4, 4, 2, 7, 8, 5, 6, 1, 10, 3]
-tops = set()
-sm = 0
-s = [None for i in range(len(I))]
-tops.add(I[0])
-s[I[0]-1] = 0
-current = []
-top = 1
-ind = -1
-delete = []
-f = 1
-while ribs:
-        if ind + 1 <= len(ribs)-1: ind += 1
-        else:
-            if current:
-                mn = s[current[0] - 1]
-                t = current[0]
-                for j in range(len(current)):
-                    if mn > s[current[j] - 1]:
-                        t = current[j]
-                        mn = s[current[j] - 1]
-                tops.add(t)
-                top = t
-                current = []
-                ind = 0
-                delete.sort(reverse=1)
-                while delete:
-                    ribs.pop(delete[0])
-                    weight.pop(delete[0])
-                    delete.pop(0)
-            else:
-                for i in range(len(I)):
-                    if I[i] not in tops:
-                        top = I[i]
-                        tops.add(top)
-                        break
-        if weight and top == ribs[ind][0] and f:
-            if s[ribs[ind][1] - 1]:
-                    s[ribs[ind][1]-1] = min(s[ribs[ind][0]-1] + weight[ind], s[ribs[ind][1]-1])
-            else:
-                    s[ribs[ind][1]-1] = s[ribs[ind][0]-1] + weight[ind]
-            current.append(ribs[ind][1])
-            delete.append(ind)
-        elif weight and top == ribs[ind][1] and f:
-            if s[ribs[ind][0] - 1]:
-                    s[ribs[ind][0]-1] = min(s[ribs[ind][1]-1] + weight[ind], s[ribs[ind][0]-1])
-            else:
-                    s[ribs[ind][0]-1] = s[ribs[ind][1]-1] + weight[ind]
-            current.append(ribs[ind][0])
-            delete.append(ind)
-print(s)
+# I = [1,2,3,4,5,6,7,8,9,10,11,12]
+# ribs = [[1,2], [1,5], [1,6], [2,3], [2,4], [2,5], [2,6], [3,4],
+#         [3,5], [4,5], [4,7], [4,8], [5,6], [5,7], [5,8], [5,9],
+#         [6,8], [6,9], [7,8],[7,10], [7,11], [8,9], [8,10], [8,11], [8,12],
+#         [9,11], [9,12], [10,11], [11,12]]
+# weight = [7, 9, 2, 5, 4, 8, 2, 2, 9, 3, 8, 3, 3, 5, 1, 7, 6, 1, 6, 4, 4, 2, 7, 8, 5, 6, 1, 10, 3]
+# tops = set()
+# sm = 0
+# s = [None for i in range(len(I))]
+# tops.add(I[0])
+# s[I[0]-1] = 0
+# current = []
+# top = 1
+# ind = -1
+# delete = []
+# f = 1
+# while ribs:
+#         if ind + 1 <= len(ribs)-1: ind += 1
+#         else:
+#             if current:
+#                 mn = s[current[0] - 1]
+#                 t = current[0]
+#                 for j in range(len(current)):
+#                     if mn > s[current[j] - 1]:
+#                         t = current[j]
+#                         mn = s[current[j] - 1]
+#                 tops.add(t)
+#                 top = t
+#                 current = []
+#                 ind = 0
+#                 delete.sort(reverse=1)
+#                 while delete:
+#                     ribs.pop(delete[0])
+#                     weight.pop(delete[0])
+#                     delete.pop(0)
+#             else:
+#                 for i in range(len(I)):
+#                     if I[i] not in tops:
+#                         top = I[i]
+#                         tops.add(top)
+#                         break
+#         if weight and top == ribs[ind][0] and f:
+#             if s[ribs[ind][1] - 1]:
+#                     s[ribs[ind][1]-1] = min(s[ribs[ind][0]-1] + weight[ind], s[ribs[ind][1]-1])
+#             else:
+#                     s[ribs[ind][1]-1] = s[ribs[ind][0]-1] + weight[ind]
+#             current.append(ribs[ind][1])
+#             delete.append(ind)
+#         elif weight and top == ribs[ind][1] and f:
+#             if s[ribs[ind][0] - 1]:
+#                     s[ribs[ind][0]-1] = min(s[ribs[ind][1]-1] + weight[ind], s[ribs[ind][0]-1])
+#             else:
+#                     s[ribs[ind][0]-1] = s[ribs[ind][1]-1] + weight[ind]
+#             current.append(ribs[ind][0])
+#             delete.append(ind)
+# print(s)
 
-#алгоритм Флойда
-I = {1,2,3,4,5,6}
-r = [[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],
-    [2,1],[2,2],[2,3],[2,4],[2,5],[2,6],
-     [3,1],[3,2],[3,3],[3,4],[3,5],[3,6],
-     [4,1],[4,2],[4,3],[4,4],[4,5],[4,6],
-     [5,1],[5,2],[5,3],[5,4],[5,5],[5,6],
-     [6,1],[6,2],[6,3],[6,4],[6,5],[6,6]]
-w = [0,1,100,100,6,3,
-     1,0,6,100,100,5,
-     100,6,0,1,3,3,
-     100,100,1,0,2,100,
-     6,100,3,2,0,4,
-     3,5,3,100,4,0]
-for top in I:
-    for i in I:
-        for j in I:
-            w[r.index([i,j])] = min(w[r.index([i,top])] + w[r.index([top,j])],w[r.index([i,j])])
-#красивый вывод табличкой
-for i in I:
-    s = ''
-    for j in I:
-        s += str(w[r.index([i,j])])+' '
-    print(s)
+# #алгоритм Флойда
+# I = {1,2,3,4,5,6}
+# r = [[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],
+#     [2,1],[2,2],[2,3],[2,4],[2,5],[2,6],
+#      [3,1],[3,2],[3,3],[3,4],[3,5],[3,6],
+#      [4,1],[4,2],[4,3],[4,4],[4,5],[4,6],
+#      [5,1],[5,2],[5,3],[5,4],[5,5],[5,6],
+#      [6,1],[6,2],[6,3],[6,4],[6,5],[6,6]]
+# w = [0,1,100,100,6,3,
+#      1,0,6,100,100,5,
+#      100,6,0,1,3,3,
+#      100,100,1,0,2,100,
+#      6,100,3,2,0,4,
+#      3,5,3,100,4,0]
+# for top in I:
+#     for i in I:
+#         for j in I:
+#             w[r.index([i,j])] = min(w[r.index([i,top])] + w[r.index([top,j])],w[r.index([i,j])])
+# #красивый вывод табличкой
+# for i in I:
+#     s = ''
+#     for j in I:
+#         s += str(w[r.index([i,j])])+' '
+#     print(s)
+
+# алгоритм Форда-Беллмана
+n = 5
+C = [[None,1,None,None,3],
+    [None,None,8,7,1],
+    [None,None,None,1,-5],
+    [None,None,2,None,None],
+    [None,None,None,4,None]]
+lam = [[None for j in range(n)] for i in range(n)]
+begin = 3-1 #начальная вершина-1
+for i in range(n): lam[i][begin] = 0
+print(lam)
+for i in range(1,n):
+    for j in range(n):
+        if j != begin:
+            comparing = []
+            for k in range(n):
+                if lam[i-1][k] != None and C[k][j] != None:
+                    comparing.append(lam[i-1][k] + C[k][j])
+            if comparing:
+                lam[i][j] = min(comparing)
+        if i != 0 and j == n-1:
+            if lam[i - 1][j] == lam[i][j]: break
+# путь из вершины 1 в остальные:
+print(lam[-1])
+
