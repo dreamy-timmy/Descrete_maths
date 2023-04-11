@@ -175,3 +175,72 @@ for i in range(1,n):
 # путь из вершины 1 в остальные:
 print(lam[-1])
 
+
+# метод ветвей и границ (всегда идём, не сравнивая)
+# сделать через "*", помечая все те, что мы типа удалили
+import math
+def f(C,road,ans):
+    sm = 0
+    d = ()
+    for i in range(len(C)):
+        for j in range(len(C[i])):
+            if C[i][j] == 0:
+                one = [C[k][j] for k in range(len(C[j])) if str(C[k][j]).isdigit() and k != i]
+                two = [C[i][k] for k in range(len(C[i])) if str(C[i][k]).isdigit() and k != j]
+                if one: mn1 = min(one)
+                else: mn1 = math.inf
+                if two: mn2 = min(two)
+                else: mn2 = math.inf
+                if (mn1 + mn2) > sm: d = (i, j)
+                sm = max(mn1 + mn2, sm)
+    ans.append((d[0],d[1]))
+    for i in range(len(C)):
+        for j in range(len(C[i])):
+            if j == d[1] or i == d[0]: C[i][j] = "*"
+    for i in range(len(C)):
+        for j in range(len(C[i])):
+            if i == d[1] and j == d[0]:
+                C[i][j] = math.inf
+    for i in range(len(C)):
+        thing = [C[i][j] for j in range(len(C[i])) if str(C[i][j]).isdigit()]
+        if thing:
+            mn = min(thing)
+            road += mn
+            for j in range(len(C[i])):
+                if str(C[i][j]).isdigit(): C[i][j] -= mn
+    for j in range(len(C)):
+        thing = [C[i][j] for i in range(len(C)) if str(C[i][j]).isdigit()]
+        if thing:
+            mn = min(thing)
+            road += mn
+            for i in range(len(C)):
+                if str(C[i][j]).isdigit(): C[i][j] -= mn
+    return C,road,ans
+C = [[math.inf,12,22,28,32],
+    [12,math.inf,10,40,20],
+    [22,10,math.inf,50,10],
+    [28,27,17,math.inf,27],
+    [32,20,10,60,math.inf]]
+# ищем корень
+root = 0
+for i in range(len(C)):
+    mn = min(C[i][j] for j in range(len(C[i])) if C[i][j] != None)
+    root += mn
+    for j in range(len(C[i])):
+        if C[i][j] != None: C[i][j] -= mn
+for j in range(len(C)):
+    mn = min(C[i][j] for i in range(len(C)) if C[i][j] != None)
+    root += mn
+    for i in range(len(C)):
+        if C[i][j] != None: C[i][j] -= mn
+d = ()
+value = []
+sm = 0
+road = root
+while any(str(C[i][j]).isdigit() for i in range(len(C)) for j in range(len(C[i]))):
+    one = f(C, road, value)
+    C = one[0]
+    road = one[1]
+print(value)
+print(road)
+
