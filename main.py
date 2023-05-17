@@ -1,4 +1,3 @@
-#here we gonna do some main stuff
 
 # Крускалы
 # I = {1,2,3,4,5,6,7}
@@ -151,96 +150,138 @@
 #     print(s)
 
 # алгоритм Форда-Беллмана
-n = 5
-C = [[None,1,None,None,3],
-    [None,None,8,7,1],
-    [None,None,None,1,-5],
-    [None,None,2,None,None],
-    [None,None,None,4,None]]
-lam = [[None for j in range(n)] for i in range(n)]
-begin = 3-1 #начальная вершина-1
-for i in range(n): lam[i][begin] = 0
-print(lam)
-for i in range(1,n):
-    for j in range(n):
-        if j != begin:
-            comparing = []
-            for k in range(n):
-                if lam[i-1][k] != None and C[k][j] != None:
-                    comparing.append(lam[i-1][k] + C[k][j])
-            if comparing:
-                lam[i][j] = min(comparing)
-        if i != 0 and j == n-1:
-            if lam[i - 1][j] == lam[i][j]: break
-# путь из вершины 1 в остальные:
-print(lam[-1])
+# n = 5
+# C = [[None,1,None,None,3],
+#     [None,None,8,7,1],
+#     [None,None,None,1,-5],
+#     [None,None,2,None,None],
+#     [None,None,None,4,None]]
+# lam = [[None for j in range(n)] for i in range(n)]
+# begin = 3-1 #начальная вершина-1
+# for i in range(n): lam[i][begin] = 0
+# print(lam)
+# for i in range(1,n):
+#     for j in range(n):
+#         if j != begin:
+#             comparing = []
+#             for k in range(n):
+#                 if lam[i-1][k] != None and C[k][j] != None:
+#                     comparing.append(lam[i-1][k] + C[k][j])
+#             if comparing:
+#                 lam[i][j] = min(comparing)
+#         if i != 0 and j == n-1:
+#             if lam[i - 1][j] == lam[i][j]: break
+# # путь из вершины 1 в остальные:
+# print(lam[-1])
 
 
-# метод ветвей и границ (всегда идём, не сравнивая)
-# сделать через "*", помечая все те, что мы типа удалили
+# # метод ветвей и границ (всегда идём, не сравнивая)
+# # сделать через "*", помечая все те, что мы типа удалили
+# import math
+# def f(C,road,ans):
+#     sm = 0
+#     d = ()
+#     for i in range(len(C)):
+#         for j in range(len(C[i])):
+#             if C[i][j] == 0:
+#                 one = [C[k][j] for k in range(len(C[j])) if str(C[k][j]).isdigit() and k != i]
+#                 two = [C[i][k] for k in range(len(C[i])) if str(C[i][k]).isdigit() and k != j]
+#                 if one: mn1 = min(one)
+#                 else: mn1 = math.inf
+#                 if two: mn2 = min(two)
+#                 else: mn2 = math.inf
+#                 if (mn1 + mn2) > sm: d = (i, j)
+#                 sm = max(mn1 + mn2, sm)
+#     ans.append((d[0],d[1]))
+#     for i in range(len(C)):
+#         for j in range(len(C[i])):
+#             if j == d[1] or i == d[0]: C[i][j] = "*"
+#     for i in range(len(C)):
+#         for j in range(len(C[i])):
+#             if i == d[1] and j == d[0]:
+#                 C[i][j] = math.inf
+#     for i in range(len(C)):
+#         thing = [C[i][j] for j in range(len(C[i])) if str(C[i][j]).isdigit()]
+#         if thing:
+#             mn = min(thing)
+#             road += mn
+#             for j in range(len(C[i])):
+#                 if str(C[i][j]).isdigit(): C[i][j] -= mn
+#     for j in range(len(C)):
+#         thing = [C[i][j] for i in range(len(C)) if str(C[i][j]).isdigit()]
+#         if thing:
+#             mn = min(thing)
+#             road += mn
+#             for i in range(len(C)):
+#                 if str(C[i][j]).isdigit(): C[i][j] -= mn
+#     return C,road,ans
+# C = [[math.inf,12,22,28,32],
+#     [12,math.inf,10,40,20],
+#     [22,10,math.inf,50,10],
+#     [28,27,17,math.inf,27],
+#     [32,20,10,60,math.inf]]
+# # ищем корень
+# root = 0
+# for i in range(len(C)):
+#     mn = min(C[i][j] for j in range(len(C[i])) if C[i][j] != None)
+#     root += mn
+#     for j in range(len(C[i])):
+#         if C[i][j] != None: C[i][j] -= mn
+# for j in range(len(C)):
+#     mn = min(C[i][j] for i in range(len(C)) if C[i][j] != None)
+#     root += mn
+#     for i in range(len(C)):
+#         if C[i][j] != None: C[i][j] -= mn
+# d = ()
+# value = []
+# sm = 0
+# road = root
+# while any(str(C[i][j]).isdigit() for i in range(len(C)) for j in range(len(C[i]))):
+#     one = f(C, road, value)
+#     C = one[0]
+#     road = one[1]
+# print(value)
+# print(road)
+
+# Форд-Фалкерсон
 import math
-def f(C,road,ans):
-    sm = 0
-    d = ()
-    for i in range(len(C)):
-        for j in range(len(C[i])):
-            if C[i][j] == 0:
-                one = [C[k][j] for k in range(len(C[j])) if str(C[k][j]).isdigit() and k != i]
-                two = [C[i][k] for k in range(len(C[i])) if str(C[i][k]).isdigit() and k != j]
-                if one: mn1 = min(one)
-                else: mn1 = math.inf
-                if two: mn2 = min(two)
-                else: mn2 = math.inf
-                if (mn1 + mn2) > sm: d = (i, j)
-                sm = max(mn1 + mn2, sm)
-    ans.append((d[0],d[1]))
-    for i in range(len(C)):
-        for j in range(len(C[i])):
-            if j == d[1] or i == d[0]: C[i][j] = "*"
-    for i in range(len(C)):
-        for j in range(len(C[i])):
-            if i == d[1] and j == d[0]:
-                C[i][j] = math.inf
-    for i in range(len(C)):
-        thing = [C[i][j] for j in range(len(C[i])) if str(C[i][j]).isdigit()]
-        if thing:
-            mn = min(thing)
-            road += mn
-            for j in range(len(C[i])):
-                if str(C[i][j]).isdigit(): C[i][j] -= mn
-    for j in range(len(C)):
-        thing = [C[i][j] for i in range(len(C)) if str(C[i][j]).isdigit()]
-        if thing:
-            mn = min(thing)
-            road += mn
-            for i in range(len(C)):
-                if str(C[i][j]).isdigit(): C[i][j] -= mn
-    return C,road,ans
-C = [[math.inf,12,22,28,32],
-    [12,math.inf,10,40,20],
-    [22,10,math.inf,50,10],
-    [28,27,17,math.inf,27],
-    [32,20,10,60,math.inf]]
-# ищем корень
-root = 0
-for i in range(len(C)):
-    mn = min(C[i][j] for j in range(len(C[i])) if C[i][j] != None)
-    root += mn
-    for j in range(len(C[i])):
-        if C[i][j] != None: C[i][j] -= mn
-for j in range(len(C)):
-    mn = min(C[i][j] for i in range(len(C)) if C[i][j] != None)
-    root += mn
-    for i in range(len(C)):
-        if C[i][j] != None: C[i][j] -= mn
-d = ()
-value = []
+# чисто формально написал вершины
+I = [1,2,3,4,5,6,7,8]
+C = [[math.inf,95,math.inf,math.inf,75,32,57,math.inf],
+    [math.inf,math.inf,6,math.inf,18,math.inf,math.inf,math.inf],
+    [math.inf,math.inf,math.inf,7,math.inf,math.inf,11,math.inf],
+    [math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,81],
+    [math.inf,math.inf,9,math.inf,math.inf,math.inf,24,math.inf],
+    [math.inf,5,math.inf,math.inf,math.inf,math.inf,20,16],
+    [math.inf,math.inf,math.inf,20,math.inf,math.inf,math.inf,94],
+    [math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf]
+]
 sm = 0
-road = root
-while any(str(C[i][j]).isdigit() for i in range(len(C)) for j in range(len(C[i]))):
-    one = f(C, road, value)
-    C = one[0]
-    road = one[1]
-print(value)
-print(road)
+mn = 0
+trash = []
+while True:
+    new_i = 0
+    chain = []
+    c = 0
+    f = 1
+    while f:
+        f = 0
+        for j in range(len(C[new_i])):
+            if j not in trash:
+                if C[new_i][j] != math.inf and C[new_i][j] != 0:
+                    f = 1
+                    chain.append((new_i, j))
+                    new_i = j
+                    c += 1
+    if c == 0: break
+    mn = min(C[ch[0]][ch[1]] for ch in chain)
+    for ch in chain:
+        C[ch[0]][ch[1]] -= mn
+    sm += mn
+    for j in range(len(C)-1):
+        if all(C[j][k] in [math.inf,0] for k in range(len(C[j]))):
+            trash.append(j)
+print(sm)
+# граф несвязный
+
 
