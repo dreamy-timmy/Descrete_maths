@@ -243,44 +243,83 @@
 # print(road)
 
 # Форд-Фалкерсон
-import math
-# чисто формально написал вершины
-I = [1,2,3,4,5,6,7,8]
-C = [[math.inf,95,math.inf,math.inf,75,32,57,math.inf],
-    [math.inf,math.inf,6,math.inf,18,math.inf,math.inf,math.inf],
-    [math.inf,math.inf,math.inf,7,math.inf,math.inf,11,math.inf],
-    [math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,81],
-    [math.inf,math.inf,9,math.inf,math.inf,math.inf,24,math.inf],
-    [math.inf,5,math.inf,math.inf,math.inf,math.inf,20,16],
-    [math.inf,math.inf,math.inf,20,math.inf,math.inf,math.inf,94],
-    [math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf]
-]
-sm = 0
-mn = 0
-trash = []
-while True:
-    new_i = 0
-    chain = []
-    c = 0
-    f = 1
-    while f:
-        f = 0
-        for j in range(len(C[new_i])):
-            if j not in trash:
-                if C[new_i][j] != math.inf and C[new_i][j] != 0:
-                    f = 1
-                    chain.append((new_i, j))
-                    new_i = j
-                    c += 1
-    if c == 0: break
-    mn = min(C[ch[0]][ch[1]] for ch in chain)
-    for ch in chain:
-        C[ch[0]][ch[1]] -= mn
-    sm += mn
-    for j in range(len(C)-1):
-        if all(C[j][k] in [math.inf,0] for k in range(len(C[j]))):
-            trash.append(j)
-print(sm)
+# import math
+# # чисто формально написал вершины
+# I = [1,2,3,4,5,6,7,8]
+# C = [[math.inf,95,math.inf,math.inf,75,32,57,math.inf],
+#     [math.inf,math.inf,6,math.inf,18,math.inf,math.inf,math.inf],
+#     [math.inf,math.inf,math.inf,7,math.inf,math.inf,11,math.inf],
+#     [math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,81],
+#     [math.inf,math.inf,9,math.inf,math.inf,math.inf,24,math.inf],
+#     [math.inf,5,math.inf,math.inf,math.inf,math.inf,20,16],
+#     [math.inf,math.inf,math.inf,20,math.inf,math.inf,math.inf,94],
+#     [math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf,math.inf]
+# ]
+# sm = 0
+# mn = 0
+# trash = []
+# while True:
+#     new_i = 0
+#     chain = []
+#     c = 0
+#     f = 1
+#     while f:
+#         f = 0
+#         for j in range(len(C[new_i])):
+#             if j not in trash:
+#                 if C[new_i][j] != math.inf and C[new_i][j] != 0:
+#                     f = 1
+#                     chain.append((new_i, j))
+#                     new_i = j
+#                     c += 1
+#     if c == 0: break
+#     mn = min(C[ch[0]][ch[1]] for ch in chain)
+#     for ch in chain:
+#         C[ch[0]][ch[1]] -= mn
+#     sm += mn
+#     for j in range(len(C)-1):
+#         if all(C[j][k] in [math.inf,0] for k in range(len(C[j]))):
+#             trash.append(j)
+# print(sm)
 # граф несвязный
+
+# алгоритм нахождения компоненты связности графа
+C = [[0,1,0,0,0,0,1],
+     [1,0,1,0,0,0,0],
+     [0,1,0,1,0,0,0],
+     [0,0,1,0,0,0,0],
+     [0,0,0,0,0,1,0],
+     [0,0,0,0,1,0,0],
+     [1,0,0,0,0,0,0]]
+tops = {x for x in range(7)}
+compons = []
+temp = [0]
+temp1 = []
+passed = set()
+while passed != tops:
+    for t in temp: top = t
+    for x in range(len(C[top])):
+        if C[top][x] == 1:
+            temp.append(x)
+    passed.add(top)
+    temp1 = [x for x in temp]
+    while temp1:
+        temp1 = [i for i in temp1 if i not in temp]
+        temp += temp1
+        temp1 = []
+        for i in range(len(temp)):
+                for x in range(len(C[temp[i]])):
+                    if x not in passed and C[temp[i]][x] == 1:
+                        temp1.append(x)
+                        passed.add(x)
+    compons.append(temp)
+    for top in tops:
+        if top not in temp:
+            temp = [top]
+            break
+print(compons)
+
+
+
 
 
